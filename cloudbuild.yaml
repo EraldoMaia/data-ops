@@ -2,7 +2,7 @@ substitutions:
   _PROJECT_ID: 'data-ops-466417'
 
 logsBucket: 'gs://cloudbuild-logs-data-ops-466417'
-timeout: 1200s
+timeout: 3600s
 
 steps:
   - name: 'hashicorp/terraform:latest'
