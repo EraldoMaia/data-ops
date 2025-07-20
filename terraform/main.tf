@@ -72,7 +72,7 @@ resource "google_composer_environment" "composer_env" {
   region          = var.region
 
   storage_config  {
-    bucket = tf_composer_bucket.name
+    bucket = google_storage_bucket.tf_composer_bucket.name
   }
 
   config {
