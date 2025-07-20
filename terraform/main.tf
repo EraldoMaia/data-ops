@@ -4,6 +4,7 @@ resource "google_storage_bucket" "tf_composer_bucket" {
   location                  = var.region
   storage_class             = "STANDARD"
   public_access_prevention  = "enforced"
+  force_destroy             = true
 }
 
 resource "google_storage_bucket" "tf_cloud_functions_bucket" {
@@ -11,6 +12,7 @@ resource "google_storage_bucket" "tf_cloud_functions_bucket" {
   location                  = var.region
   storage_class             = "STANDARD"
   public_access_prevention  = "enforced"
+  force_destroy             = true
 }
 
 resource "google_storage_bucket" "tf_bigquery_scripts_bucket" {
@@ -18,6 +20,7 @@ resource "google_storage_bucket" "tf_bigquery_scripts_bucket" {
   location                  = var.region
   storage_class             = "STANDARD"
   public_access_prevention  = "enforced"
+  force_destroy             = true
 }
 
 # Definição do ambiente Cloud Function 
