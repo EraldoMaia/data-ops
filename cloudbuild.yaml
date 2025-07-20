@@ -6,6 +6,12 @@ steps:
     entrypoint: 'terraform'
     args: ['init']
     dir: 'terraform'
+    
+  #  Destrói recursos antes de recriar, evitando conflitos de existência
+  - name: 'hashicorp/terraform:latest'
+    entrypoint: 'terraform'
+    args: ['destroy', '-auto-approve']
+    dir: 'terraform'
 
   - name: 'hashicorp/terraform:latest'
     entrypoint: 'terraform'
