@@ -23,39 +23,6 @@ resource "google_storage_bucket" "tf_bigquery_scripts_bucket" {
   force_destroy             = true
 }
 
-# Definição do ambiente Cloud Function 
-resource "google_cloudfunctions2_function" "python_script_function" {
-  name        = "fnc-kaggle-sample-sales"
-  location    = var.region
-
-  build_config {
-    runtime     = "python310"
-    entry_point = "main" # Nome da função Python de entrada
-    source {
-      storage_source {
-        bucket = google_storage_bucket.tf_cloud_functions_bucket.name
-        object = "fnc-kaggle-sample-sales.zip" # Caminho do arquivo zip com o código Python
-      }
-    }
-  }
-
-  service_config {
-        max_instance_count               = 3
-        min_instance_count               = 1
-        available_memory                 = "4Gi"
-        timeout_seconds                  = 300
-        max_instance_request_concurrency = 80
-        available_cpu                    = "4"
-        environment_variables = {
-            SERVICE_CONFIG_TEST          = "config_test"
-            SERVICE_CONFIG_DIFF_TEST     = var.cloud_function_sa
-        }
-        ingress_settings                 = "ALLOW_INTERNAL_ONLY"
-        all_traffic_on_latest_revision   = true
-        service_account_email            = var.cloud_function_sa
-  }
-}
-
 # Definição do ambiente Cloud Composer
 resource "google_compute_network" "composer_prod_network" {
   name                    = "composer-prod-network"

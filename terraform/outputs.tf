@@ -3,24 +3,9 @@ output "composer_bucket_name" {
   value       = google_storage_bucket.tf_composer_bucket.name
 }
 
-output "cloud_functions_bucket_name" {
-  description = "Nome do bucket do Cloud Functions."
-  value       = google_storage_bucket.tf_cloud_functions_bucket.name
-}
-
 output "bigquery_scripts_bucket_name" {
   description = "Nome do bucket para scripts DDL/DML do BigQuery."
   value       = google_storage_bucket.tf_bigquery_scripts_bucket.name
-}
-
-output "cloud_function_name" {
-  description = "Nome da Cloud Function 2nd gen criada."
-  value       = google_cloudfunctions2_function.python_script_function.name
-}
-
-output "cloud_function_url" {
-  description = "URL da Cloud Function 2nd gen criada."
-  value       = google_cloudfunctions2_function.python_script_function.service_config[0].uri
 }
 
 output "composer_environment_name" {
