@@ -1,6 +1,6 @@
 substitutions:
   _PROJECT_ID: 'data-ops-466417'
-  
+
 logsBucket: 'gs://cloudbuild-logs-data-ops-466417'
 timeout: 1200s
 
@@ -21,7 +21,8 @@ steps:
         terraform state list | grep google_storage_bucket.tf_cloud_functions_bucket || terraform import google_storage_bucket.tf_cloud_functions_bucket tf-cloud-functions-bucket
         terraform state list | grep google_storage_bucket.tf_bigquery_scripts_bucket || terraform import google_storage_bucket.tf_bigquery_scripts_bucket tf-bigquery-scripts-bucket
         terraform state list | grep google_compute_network.composer_prod_network || terraform import google_compute_network.composer_prod_network projects/$PROJECT_ID/global/networks/composer-prod-network
-
+        terraform state list | grep google_compute_subnetwork.composer_prod_subnetwork || terraform import google_compute_subnetwork.composer_prod_subnetwork projects/$PROJECT_ID/regions/southamerica-east1/subnetworks/composer-prod-subnetwork
+  
   - name: 'hashicorp/terraform:latest'
     entrypoint: 'terraform'
     args: ['plan', '-out=tfplan']
