@@ -10,24 +10,23 @@ steps:
     args: ['init']
     dir: 'terraform'
 
-  - name: 'hashicorp/terraform:latest'
-    entrypoint: 'terraform'
-    args: ['destroy', '-auto-approve']
-    dir: 'terraform'
+  # - name: 'hashicorp/terraform:latest'
+  #   entrypoint: 'terraform'
+  #   args: ['destroy', '-auto-approve']
+  #   dir: 'terraform'
 
   # Step para importar recursos existentes
-  # - name: 'hashicorp/terraform:latest'
-  #   entrypoint: 'sh'
-  #   dir: 'terraform'
-  #   args:
-  #     - '-c'
-  #     - |
-  #       terraform state list | grep google_storage_bucket.tf_composer_bucket || terraform import google_storage_bucket.tf_composer_bucket tf-composer-bucket
-  #       terraform state list | grep google_storage_bucket.tf_cloud_functions_bucket || terraform import google_storage_bucket.tf_cloud_functions_bucket tf-cloud-functions-bucket
-  #       terraform state list | grep google_storage_bucket.tf_bigquery_scripts_bucket || terraform import google_storage_bucket.tf_bigquery_scripts_bucket tf-bigquery-scripts-bucket
-  #       terraform state list | grep google_compute_network.composer_prod_network || terraform import google_compute_network.composer_prod_network projects/$PROJECT_ID/global/networks/composer-prod-network
-  #       terraform state list | grep google_compute_subnetwork.composer_prod_subnetwork || terraform import google_compute_subnetwork.composer_prod_subnetwork projects/$PROJECT_ID/regions/southamerica-east1/subnetworks/composer-prod-subnetwork
-  #       terraform state list | grep google_composer_environment.composer_env || terraform import google_composer_environment.composer_env projects/$PROJECT_ID/locations/southamerica-east1/environments/composer-prod
+  - name: 'hashicorp/terraform:latest'
+    entrypoint: 'sh'
+    dir: 'terraform'
+    args:
+      - '-c'
+      - |
+        terraform state list | grep google_storage_bucket.tf_composer_bucket || terraform import google_storage_bucket.tf_composer_bucket tf-composer-bucket
+        terraform state list | grep google_storage_bucket.tf_cloud_functions_bucket || terraform import google_storage_bucket.tf_cloud_functions_bucket tf-cloud-functions-bucket
+        terraform state list | grep google_storage_bucket.tf_bigquery_scripts_bucket || terraform import google_storage_bucket.tf_bigquery_scripts_bucket tf-bigquery-scripts-bucket
+        terraform state list | grep google_compute_network.composer_prod_network || terraform import google_compute_network.composer_prod_network projects/$PROJECT_ID/global/networks/composer-prod-network
+        terraform state list | grep google_compute_subnetwork.composer_prod_subnetwork || terraform import google_compute_subnetwork.composer_prod_subnetwork projects/$PROJECT_ID/regions/southamerica-east1/subnetworks/composer-prod-subnetwork
 
   - name: 'hashicorp/terraform:latest'
     entrypoint: 'terraform'
