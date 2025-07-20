@@ -9,6 +9,7 @@ Este diretório contém a configuração básica para provisionar recursos no Go
 - **Bucket para o Cloud Function:**Armazenamento utilizado para guardar código fonte, artefatos ou arquivos temporários usados pelas Cloud Functions.
 - **Infraestrutura do Cloud Function:**
   Provisionamento das Cloud Functions, incluindo configuração de triggers, permissões e variáveis de ambiente.
+- **Bucket para o BigQuery:**Armazenamento utilizado para scripts DDL/DML do BigQuery.
 
 ## Como usar
 

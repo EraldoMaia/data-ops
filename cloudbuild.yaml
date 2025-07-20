@@ -1,0 +1,15 @@
+steps:
+  - name: 'hashicorp/terraform:1.7.5'
+    entrypoint: 'terraform'
+    args: ['init']
+    dir: 'terraform'
+
+  - name: 'hashicorp/terraform:1.7.5'
+    entrypoint: 'terraform'
+    args: ['plan', '-out=tfplan']
+    dir: 'terraform'
+
+  - name: 'hashicorp/terraform:1.7.5'
+    entrypoint: 'terraform'
+    args: ['apply', '-auto-approve', 'tfplan']
+    dir: 'terraform'
