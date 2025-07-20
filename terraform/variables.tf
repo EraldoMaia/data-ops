@@ -16,12 +16,6 @@ variable "cloud_composer_sa" {
   description = "Conta de servico para os processos do cloud composer."
 }
 
-variable "cloud_function_sa" {
-  type        = string
-  default     = "cloud-function-sa@data-ops-466417.iam.gserviceaccount.com"
-  description = "Conta de servico para os processos do cloud function."
-}
-
 variable "composer_image_version" {
   description = "Versão da imagem do Cloud Composer."
   type        = string
