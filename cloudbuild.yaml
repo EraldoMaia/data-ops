@@ -1,3 +1,6 @@
+logsBucket: 'gs://cloudbuild-logs-data-ops-466417'
+timeout: 1200s
+
 steps:
   - name: 'hashicorp/terraform:1.7.5'
     entrypoint: 'terraform'
