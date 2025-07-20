@@ -2,17 +2,17 @@ logsBucket: 'gs://cloudbuild-logs-data-ops-466417'
 timeout: 1200s
 
 steps:
-  - name: 'hashicorp/terraform:1.7.5'
+  - name: 'hashicorp/terraform:latest'
     entrypoint: 'terraform'
     args: ['init']
     dir: 'terraform'
 
-  - name: 'hashicorp/terraform:1.7.5'
+  - name: 'hashicorp/terraform:latest'
     entrypoint: 'terraform'
     args: ['plan', '-out=tfplan']
     dir: 'terraform'
 
-  - name: 'hashicorp/terraform:1.7.5'
+  - name: 'hashicorp/terraform:latest'
     entrypoint: 'terraform'
     args: ['apply', '-auto-approve', 'tfplan']
     dir: 'terraform'
