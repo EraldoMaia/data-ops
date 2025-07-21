@@ -1,4 +1,5 @@
 terraform {
+  
   required_version = ">= 1.5.0"
 
   required_providers {
@@ -6,6 +7,11 @@ terraform {
       source  = "hashicorp/google"
       version = "~> 5.20"
     }
+  }
+
+  backend "gcs" {
+    bucket  = var.bucket_cloudbuild_logs
+    prefix  = "terraform/state"
   }
 }
 
