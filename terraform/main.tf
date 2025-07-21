@@ -34,34 +34,34 @@ resource "random_id" "suffix" {
 # REDE E SUBREDE
 ###########################
 
-resource "google_compute_network" "composer_prod_network" {
-  name                    = "composer-prod-network"
+resource "google_compute_network" "prod_network" {
+  name                    = "prod-network"
   auto_create_subnetworks = false
 }
 
-resource "google_compute_subnetwork" "composer_prod_subnetwork" {
-  name          = "composer-prod-subnetwork"
+resource "google_compute_subnetwork" "prod_subnetwork" {
+  name          = "prod-subnetwork"
   ip_cidr_range = "10.2.0.0/16"
   region        = var.region
-  network       = google_compute_network.composer_prod_network.id
+  network       = google_compute_network.prod_network.id
 }
 
 ###########################
 # PEERING COM SERVICE NETWORKING
 ###########################
 
-resource "google_compute_global_address" "composer_private_ip_range" {
-  name          = "composer-private-ip-range"
+resource "google_compute_global_address" "private_ip_range" {
+  name          = "private-ip-range"
   purpose       = "VPC_PEERING"
   address_type  = "INTERNAL"
   prefix_length = 16
-  network       = google_compute_network.composer_prod_network.id
+  network       = google_compute_network.prod_network.id
 }
 
-resource "google_service_networking_connection" "composer_vpc_connection" {
-  network                 = google_compute_network.composer_prod_network.id
+resource "google_service_networking_connection" "vpc_connection" {
+  network                 = google_compute_network.prod_network.id
   service                 = "servicenetworking.googleapis.com"
-  reserved_peering_ranges = [google_compute_global_address.composer_private_ip_range.name]
+  reserved_peering_ranges = [google_compute_global_address.private_ip_range.name]
 }
 
 ###########################
@@ -115,8 +115,8 @@ resource "google_composer_environment" "composer_env" {
     environment_size = "ENVIRONMENT_SIZE_SMALL"
 
     node_config {
-      network         = google_compute_network.composer_prod_network.id
-      subnetwork      = google_compute_subnetwork.composer_prod_subnetwork.id
+      network         = google_compute_network.prod_network.id
+      subnetwork      = google_compute_subnetwork.prod_subnetwork.id
       service_account = var.cloud_composer_sa
     }
   }
