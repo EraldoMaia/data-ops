@@ -9,13 +9,6 @@ variable "project_id" {
   default     = "data-ops-466417"
   description = "Id do projeto onde os recursos serao criados."
 }
-
-variable "bucket_cloudbuild_logs" {
-  type        = string
-  default     = "cloudbuild-logs-data-ops-466417"
-  description = "Bucket onde serao armazenados os logs de estado do terraform."
-}
-
 variable "cloud_composer_sa" {
   type        = string
   default     = "cloud-composer-sa@data-ops-466417.iam.gserviceaccount.com"
