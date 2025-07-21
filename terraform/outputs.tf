@@ -50,3 +50,28 @@ output "private_ip_range" {
   description = "CIDR reservado para o Composer (VPC Peering)."
   value       = google_compute_global_address.private_ip_range.address
 }
+
+output "nat_router_name" {
+  description = "Nome do Cloud Router associado ao Cloud NAT."
+  value       = google_compute_router.nat_router.name
+}
+
+output "nat_router_region" {
+  description = "Região do Cloud Router e do Cloud NAT."
+  value       = google_compute_router.nat_router.region
+}
+
+output "cloud_nat_name" {
+  description = "Nome do recurso Cloud NAT configurado."
+  value       = google_compute_router_nat.nat_config.name
+}
+
+output "cloud_nat_nat_ip_allocate_option" {
+  description = "Opção de alocação de IP do Cloud NAT (AUTO_ONLY ou MANUAL_ONLY)."
+  value       = google_compute_router_nat.nat_config.nat_ip_allocate_option
+}
+
+output "cloud_nat_subnetwork_config" {
+  description = "Configuração de subredes para o Cloud NAT."
+  value       = google_compute_router_nat.nat_config.source_subnetwork_ip_ranges_to_nat
+}
