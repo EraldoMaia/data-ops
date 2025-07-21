@@ -45,8 +45,3 @@ output "subnetwork_self_link" {
   description = "Self-link da subrede (útil para referenciar em outros recursos)."
   value       = google_compute_subnetwork.prod_subnetwork.self_link
 }
-
-output "private_ip_range" {
-  description = "CIDR reservado para o Composer (VPC Peering)."
-  value       = google_compute_global_address.private_ip_range.address
-}
