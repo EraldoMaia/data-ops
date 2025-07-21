@@ -73,7 +73,7 @@ resource "google_composer_environment" "composer_env" {
   region = var.region
 
   depends_on = [
-    google_service_networking_connection.composer_vpc_connection,
+    google_service_networking_connection.vpc_connection,
     google_storage_bucket.tf_composer_bucket
   ]
 
