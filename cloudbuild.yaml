@@ -22,7 +22,10 @@ steps:
         terraform state list | grep google_storage_bucket.tf_cloud_functions_bucket || terraform import google_storage_bucket.tf_cloud_functions_bucket tf-cloud-functions-bucket
         terraform state list | grep google_storage_bucket.tf_bigquery_scripts_bucket || terraform import google_storage_bucket.tf_bigquery_scripts_bucket tf-bigquery-scripts-bucket
         terraform state list | grep google_compute_network.prod_network || terraform import google_compute_network.prod_network projects/data-ops-466417/global/networks/prod-network
-
+        terraform state list | grep google_compute_subnetwork.prod_subnetwork || terraform import google_compute_subnetwork.prod_subnetwork projects/data-ops-466417/regions/southamerica-east1/subnetworks/prod-subnetwork
+        terraform state list | grep google_compute_global_address.private_ip_range || terraform import google_compute_global_address.private_ip_range projects/data-ops-466417/global/addresses/private-ip-range
+        terraform state list | grep google_compute_router.nat_router || terraform import google_compute_router.nat_router projects/data-ops-466417/regions/southamerica-east1/routers/prod-nat-router
+  
   # 3. Planejar criação
   - name: 'hashicorp/terraform:latest'
     entrypoint: 'terraform'
