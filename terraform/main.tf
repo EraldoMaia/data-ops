@@ -55,11 +55,6 @@ resource "google_composer_environment" "composer_env" {
   name   = "composer-prod"
   region = var.region
 
-  depends_on = [
-    google_service_networking_connection.vpc_connection,
-    google_storage_bucket.tf_composer_bucket
-  ]
-
   storage_config {
     bucket = google_storage_bucket.tf_composer_bucket.name
   }
