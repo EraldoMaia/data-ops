@@ -12,36 +12,13 @@ steps:
     args: ['init']
     dir: 'terraform'
 
-  # 2. Importar recursos existentes (se necessário)
-  # - name: 'hashicorp/terraform:latest'
-  #   entrypoint: 'sh'
-  #   dir: 'terraform'
-  #   args:
-  #     - '-c'
-  #     - |
-  #       terraform state list | grep google_compute_network.composer_prod_network || terraform import google_compute_network.composer_prod_network projects/$PROJECT_ID/global/networks/prod-network
-  #       terraform state list | grep google_compute_subnetwork.composer_prod_subnetwork || terraform import google_compute_subnetwork.composer_prod_subnetwork projects/$PROJECT_ID/regions/southamerica-east1/subnetworks/prod-subnetwork
-  #       terraform state list | grep google_compute_global_address.composer_private_ip_range || terraform import google_compute_global_address.composer_private_ip_range projects/$PROJECT_ID/global/addresses/private-ip-range
-
-  # 3. Planejar destruição
-  - name: 'hashicorp/terraform:latest'
-    entrypoint: 'terraform'
-    args: ['plan', '-destroy', '-out=tfplan_destroy']
-    dir: 'terraform'
-
-  # 4. Aplicar destruição
-  - name: 'hashicorp/terraform:latest'
-    entrypoint: 'terraform'
-    args: ['apply', '-auto-approve', 'tfplan_destroy']
-    dir: 'terraform'
-
-  # 5. Novo plano após destruição
+  # 2. Terraform Plan
   - name: 'hashicorp/terraform:latest'
     entrypoint: 'terraform'
     args: ['plan', '-out=tfplan']
     dir: 'terraform'
 
-  # 6. Aplicar criação
+  # 3. Terraform apply
   - name: 'hashicorp/terraform:latest'
     entrypoint: 'terraform'
     args: ['apply', '-auto-approve', 'tfplan']
