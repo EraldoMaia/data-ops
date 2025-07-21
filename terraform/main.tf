@@ -1,29 +1,39 @@
-# Definição dos Buckets 
+###########################
+# BUCKETS
+###########################
+
 resource "google_storage_bucket" "tf_composer_bucket" {
-  name                      = "tf-composer-bucket"
+  name                      = "tf-composer-${random_id.suffix.hex}"
   location                  = var.region
   storage_class             = "STANDARD"
-  public_access_prevention  = "enforced"
+  public_access_prevention = "enforced"
   force_destroy             = true
 }
 
 resource "google_storage_bucket" "tf_cloud_functions_bucket" {
-  name                      = "tf-cloud-functions-bucket"
+  name                      = "tf-cloud-functions-${random_id.suffix.hex}"
   location                  = var.region
   storage_class             = "STANDARD"
-  public_access_prevention  = "enforced"
+  public_access_prevention = "enforced"
   force_destroy             = true
 }
 
 resource "google_storage_bucket" "tf_bigquery_scripts_bucket" {
-  name                      = "tf-bigquery-scripts-bucket"
+  name                      = "tf-bigquery-scripts-${random_id.suffix.hex}"
   location                  = var.region
   storage_class             = "STANDARD"
-  public_access_prevention  = "enforced"
+  public_access_prevention = "enforced"
   force_destroy             = true
 }
 
-# Definição do ambiente Cloud Composer
+resource "random_id" "suffix" {
+  byte_length = 4
+}
+
+###########################
+# REDE E SUBREDE
+###########################
+
 resource "google_compute_network" "composer_prod_network" {
   name                    = "composer-prod-network"
   auto_create_subnetworks = false
@@ -35,6 +45,10 @@ resource "google_compute_subnetwork" "composer_prod_subnetwork" {
   region        = var.region
   network       = google_compute_network.composer_prod_network.id
 }
+
+###########################
+# PEERING COM SERVICE NETWORKING
+###########################
 
 resource "google_compute_global_address" "composer_private_ip_range" {
   name          = "composer-private-ip-range"
@@ -50,44 +64,54 @@ resource "google_service_networking_connection" "composer_vpc_connection" {
   reserved_peering_ranges = [google_compute_global_address.composer_private_ip_range.name]
 }
 
+###########################
+# AMBIENTE CLOUD COMPOSER
+###########################
+
 resource "google_composer_environment" "composer_env" {
+  name   = "composer-prod"
+  region = var.region
 
-  name            = "composer-prod"
-  region          = var.region
+  depends_on = [
+    google_service_networking_connection.composer_vpc_connection,
+    google_storage_bucket.tf_composer_bucket
+  ]
 
-  storage_config  {
+  storage_config {
     bucket = google_storage_bucket.tf_composer_bucket.name
   }
 
   config {
-
     resilience_mode = var.resilience_mode
 
     software_config {
-      image_version  = var.composer_image_version
+      image_version = var.composer_image_version
     }
 
     workloads_config {
-      scheduler {
-        cpu        = 2
-        memory_gb  = 7.5
+     scheduler {
+        cpu        = 1
+        memory_gb  = 3.75
         storage_gb = 5
         count      = 1
       }
+
       web_server {
-        cpu        = 2
-        memory_gb  = 7.5
+        cpu        = 1
+        memory_gb  = 3.75
         storage_gb = 5
       }
+
       worker {
-        cpu        = 2
-        memory_gb  = 7.5
+        cpu        = 1
+        memory_gb  = 3.75
         storage_gb = 5
-        min_count  = 2
-        max_count  = 6
+        min_count  = 1
+        max_count  = 3
       }
+
     }
-    
+
     environment_size = "ENVIRONMENT_SIZE_SMALL"
 
     node_config {
@@ -95,7 +119,5 @@ resource "google_composer_environment" "composer_env" {
       subnetwork      = google_compute_subnetwork.composer_prod_subnetwork.id
       service_account = var.cloud_composer_sa
     }
-
   }
-
 }
