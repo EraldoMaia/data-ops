@@ -106,12 +106,6 @@ resource "google_composer_environment" "composer_env" {
       storage_gb = 5
       count      = 2
     }
-    triggerer {
-      cpu        = 0.5
-      memory_gb  = 0.5
-      storage_gb = 5
-      count      = 1
-    }
     web_server {
       cpu        = 2
       memory_gb  = 7.5
