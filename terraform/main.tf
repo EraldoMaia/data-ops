@@ -68,27 +68,27 @@ resource "google_composer_environment" "composer_env" {
 
     workloads_config {
      scheduler {
-      cpu        = 2
-      memory_gb  = 7.5
-      storage_gb = 5
-      count      = 2
+      cpu        = 0.5
+      memory_gb  = 2
+      storage_gb = 1
+      count      = 1
     }
     web_server {
-      cpu        = 2
-      memory_gb  = 7.5
-      storage_gb = 5
+      cpu        = 1
+      memory_gb  = 2
+      storage_gb = 1
     }
     worker {
-      cpu        = 2
-      memory_gb  = 7.5
-      storage_gb = 5
-      min_count  = 2
-      max_count  = 6
+      cpu        = 0.5
+      memory_gb  = 2
+      storage_gb = 1
+      min_count  = 1
+      max_count  = 3
     }
 
     }
 
-    environment_size = "ENVIRONMENT_SIZE_MEDIUM"
+    environment_size = "ENVIRONMENT_SIZE_SMALL"
 
     node_config {
       network         = google_compute_network.prod_network.id
