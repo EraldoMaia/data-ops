@@ -37,7 +37,7 @@ resource "google_compute_network" "prod_network" {
 
 resource "google_compute_subnetwork" "prod_subnetwork" {
   name          = "prod-subnetwork"
-  ip_cidr_range = "10.8.0.0/22"
+  ip_cidr_range = "10.158.0.0/20"
   region        = var.region
   network       = google_compute_network.prod_network.id
   private_ip_google_access = true
@@ -51,7 +51,7 @@ resource "google_compute_global_address" "private_ip_range" {
   name          = "private-ip-range"
   purpose       = "VPC_PEERING"
   address_type  = "INTERNAL"
-  prefix_length = 22
+  prefix_length = 20
   network       = google_compute_network.prod_network.id
 }
 
@@ -103,20 +103,26 @@ resource "google_composer_environment" "composer_env" {
      scheduler {
       cpu        = 2
       memory_gb  = 7.5
-      storage_gb = 10
+      storage_gb = 5
+      count      = 2
+    }
+    triggerer {
+      cpu        = 0.5
+      memory_gb  = 0.5
+      storage_gb = 5
       count      = 1
     }
     web_server {
       cpu        = 2
       memory_gb  = 7.5
-      storage_gb = 10
+      storage_gb = 5
     }
     worker {
       cpu        = 2
       memory_gb  = 7.5
-      storage_gb = 10
-      min_count  = 1
-      max_count  = 3
+      storage_gb = 5
+      min_count  = 2
+      max_count  = 6
     }
 
     }
@@ -124,8 +130,10 @@ resource "google_composer_environment" "composer_env" {
     environment_size = "ENVIRONMENT_SIZE_MEDIUM"
 
     node_config {
-      network         = google_compute_network.prod_network.id
-      subnetwork      = google_compute_subnetwork.prod_subnetwork.id
+      # network         = google_compute_network.prod_network.id
+      # subnetwork      = google_compute_subnetwork.prod_subnetwork.id
+      network         = "default"
+      subnetwork      = "default"
       service_account = var.cloud_composer_sa
     }
   }
