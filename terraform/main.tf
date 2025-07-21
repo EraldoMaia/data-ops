@@ -37,8 +37,13 @@ resource "google_compute_network" "prod_network" {
 
 resource "google_compute_subnetwork" "prod_subnetwork" {
   name          = "prod-subnetwork"
+  ip_cidr_range = "10.2.0.0/16"
   region        = var.region
   network       = google_compute_network.prod_network.id
+  secondary_ip_range {
+    range_name    = "prod-subnetwork-range-update1"
+    ip_cidr_range = "192.168.10.0/24"
+  }
   private_ip_google_access = true
 }
 
@@ -51,6 +56,8 @@ resource "google_compute_global_address" "private_ip_range" {
   purpose       = "VPC_PEERING"
   address_type  = "INTERNAL"
   network       = google_compute_network.prod_network.id
+  address       = "100.100.0.0"
+  prefix_length = 16
 }
 
 resource "google_service_networking_connection" "vpc_connection" {

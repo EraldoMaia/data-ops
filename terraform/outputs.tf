@@ -61,17 +61,9 @@ output "nat_router_region" {
   value       = google_compute_router.nat_router.region
 }
 
-output "cloud_nat_name" {
-  description = "Nome do recurso Cloud NAT configurado."
-  value       = google_compute_router_nat.nat_config.name
-}
-
-output "cloud_nat_nat_ip_allocate_option" {
-  description = "Opção de alocação de IP do Cloud NAT (AUTO_ONLY ou MANUAL_ONLY)."
-  value       = google_compute_router_nat.nat_config.nat_ip_allocate_option
-}
-
-output "cloud_nat_subnetwork_config" {
-  description = "Configuração de subredes para o Cloud NAT."
-  value       = google_compute_router_nat.nat_config.source_subnetwork_ip_ranges_to_nat
+output "cloud_nat" {
+  value = {
+    name   = google_compute_router_nat.nat.name
+    router = google_compute_router.nat_router.name
+  }
 }
