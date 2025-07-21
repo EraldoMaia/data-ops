@@ -3,7 +3,7 @@
 ###########################
 
 resource "google_storage_bucket" "tf_composer_bucket" {
-  name                      = "tf-composer-${random_id.suffix.hex}"
+  name                      = "tf-composer-bucket"
   location                  = var.region
   storage_class             = "STANDARD"
   public_access_prevention = "enforced"
@@ -11,7 +11,7 @@ resource "google_storage_bucket" "tf_composer_bucket" {
 }
 
 resource "google_storage_bucket" "tf_cloud_functions_bucket" {
-  name                      = "tf-cloud-functions-${random_id.suffix.hex}"
+  name                      = "tf-cloud-functions-bucket"
   location                  = var.region
   storage_class             = "STANDARD"
   public_access_prevention = "enforced"
@@ -19,15 +19,11 @@ resource "google_storage_bucket" "tf_cloud_functions_bucket" {
 }
 
 resource "google_storage_bucket" "tf_bigquery_scripts_bucket" {
-  name                      = "tf-bigquery-scripts-${random_id.suffix.hex}"
+  name                      = "tf-bigquery-scripts-bucket"
   location                  = var.region
   storage_class             = "STANDARD"
   public_access_prevention = "enforced"
   force_destroy             = true
-}
-
-resource "random_id" "suffix" {
-  byte_length = 4
 }
 
 ###########################
@@ -41,9 +37,10 @@ resource "google_compute_network" "prod_network" {
 
 resource "google_compute_subnetwork" "prod_subnetwork" {
   name          = "prod-subnetwork"
-  ip_cidr_range = "10.2.0.0/16"
+  ip_cidr_range = "10.8.0.0/22"
   region        = var.region
   network       = google_compute_network.prod_network.id
+  private_ip_google_access = true
 }
 
 ###########################
@@ -54,7 +51,7 @@ resource "google_compute_global_address" "private_ip_range" {
   name          = "private-ip-range"
   purpose       = "VPC_PEERING"
   address_type  = "INTERNAL"
-  prefix_length = 16
+  prefix_length = 22
   network       = google_compute_network.prod_network.id
 }
 
@@ -62,6 +59,20 @@ resource "google_service_networking_connection" "vpc_connection" {
   network                 = google_compute_network.prod_network.id
   service                 = "servicenetworking.googleapis.com"
   reserved_peering_ranges = [google_compute_global_address.private_ip_range.name]
+}
+
+resource "google_compute_router" "nat_router" {
+  name    = "prod-nat-router"
+  network = google_compute_network.prod_network.id
+  region  = var.region
+}
+
+resource "google_compute_router_nat" "nat_config" {
+  name                               = "prod-nat"
+  router                             = google_compute_router.nat_router.name
+  region                             = var.region
+  nat_ip_allocate_option             = "AUTO_ONLY"
+  source_subnetwork_ip_ranges_to_nat = "ALL_SUBNETWORKS_ALL_IP_RANGES"
 }
 
 ###########################
