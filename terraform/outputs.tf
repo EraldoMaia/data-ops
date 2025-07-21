@@ -33,20 +33,20 @@ output "composer_airflow_uri" {
 # === REDE ===
 output "vpc_network_name" {
   description = "Nome da VPC usada pelo Composer."
-  value       = google_compute_network.composer_prod_network.name
+  value       = google_compute_network.prod_network.name
 }
 
 output "subnetwork_name" {
   description = "Nome da subrede usada pelo Composer."
-  value       = google_compute_subnetwork.composer_prod_subnetwork.name
+  value       = google_compute_subnetwork.prod_subnetwork.name
 }
 
 output "subnetwork_self_link" {
   description = "Self-link da subrede (útil para referenciar em outros recursos)."
-  value       = google_compute_subnetwork.composer_prod_subnetwork.self_link
+  value       = google_compute_subnetwork.prod_subnetwork.self_link
 }
 
-output "composer_private_ip_range" {
+output "private_ip_range" {
   description = "CIDR reservado para o Composer (VPC Peering)."
-  value       = google_compute_global_address.composer_private_ip_range.address
+  value       = google_compute_global_address.private_ip_range.address
 }
