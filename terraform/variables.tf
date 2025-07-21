@@ -19,7 +19,7 @@ variable "cloud_composer_sa" {
 variable "composer_image_version" {
   description = "Versão da imagem do Cloud Composer."
   type        = string
-  default     = "composer-2.13.3-airflow-2.10.5"
+  default     = "composer-2.5.5-airflow-2.7.3"
 }
 
 variable "resilience_mode" {
