@@ -48,39 +48,6 @@ resource "google_compute_subnetwork" "prod_subnetwork" {
 }
 
 ###########################
-# PEERING COM SERVICE NETWORKING
-###########################
-
-resource "google_compute_global_address" "private_ip_range" {
-  name          = "private-ip-range"
-  purpose       = "VPC_PEERING"
-  address_type  = "INTERNAL"
-  network       = google_compute_network.prod_network.id
-  address       = "100.100.0.0"
-  prefix_length = 16
-}
-
-resource "google_service_networking_connection" "vpc_connection" {
-  network                 = google_compute_network.prod_network.id
-  service                 = "servicenetworking.googleapis.com"
-  reserved_peering_ranges = [google_compute_global_address.private_ip_range.name]
-}
-
-resource "google_compute_router" "nat_router" {
-  name    = "prod-nat-router"
-  network = google_compute_network.prod_network.id
-  region  = var.region
-}
-
-resource "google_compute_router_nat" "nat_config" {
-  name                               = "prod-nat"
-  router                             = google_compute_router.nat_router.name
-  region                             = var.region
-  nat_ip_allocate_option             = "AUTO_ONLY"
-  source_subnetwork_ip_ranges_to_nat = "ALL_SUBNETWORKS_ALL_IP_RANGES"
-}
-
-###########################
 # AMBIENTE CLOUD COMPOSER
 ###########################
 

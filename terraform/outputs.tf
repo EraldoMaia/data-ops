@@ -45,25 +45,3 @@ output "subnetwork_self_link" {
   description = "Self-link da subrede (útil para referenciar em outros recursos)."
   value       = google_compute_subnetwork.prod_subnetwork.self_link
 }
-
-output "private_ip_range" {
-  description = "CIDR reservado para o Composer (VPC Peering)."
-  value       = google_compute_global_address.private_ip_range.address
-}
-
-output "nat_router_name" {
-  description = "Nome do Cloud Router associado ao Cloud NAT."
-  value       = google_compute_router.nat_router.name
-}
-
-output "nat_router_region" {
-  description = "Região do Cloud Router e do Cloud NAT."
-  value       = google_compute_router.nat_router.region
-}
-
-output "cloud_nat" {
-  value = {
-    name   = google_compute_router_nat.nat.name
-    router = google_compute_router.nat_router.name
-  }
-}
