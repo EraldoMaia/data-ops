@@ -10,7 +10,7 @@ terraform {
   }
 
   backend "gcs" {
-    bucket  = var.bucket_cloudbuild_logs
+    bucket  = "cloudbuild-logs-data-ops-466417"
     prefix  = "terraform/state"
   }
 }
